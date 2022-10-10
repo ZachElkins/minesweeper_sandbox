@@ -82,11 +82,11 @@ class Game:
 
     @staticmethod
     def display_state(game: Dict) -> None:
-        print(" ", end=" ")
+        print("  ", end="")
         [print(x, end=" ") for x in range(len(game["board"]))]
-        print("-"*len(game["board"]))
+        print("")
         for i, row in enumerate(game["board"]):
-            print(i, end="|")
+            print(i, end=" ")
             for cell in row:
                 print(cell, end=" ")
             print("")
