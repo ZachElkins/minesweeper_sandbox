@@ -15,12 +15,12 @@ class Board:
         self.create_empty_board()
 
     def create_empty_board(self) -> List[List[Cell]]:
-        self.board = [[Cell() for _ in range(self.h)] for _ in range(self.w)].copy()
+        self.board = [[Cell() for _ in range(self.w)] for _ in range(self.h)].copy()
         for x in range(self.w):
             for y in range(self.h):
                 self.board[y][x].set_position(pos=Position(y, x))
 
-    def populate_board(self, move: Position) -> bool:
+    def populate_board(self, move: Position) -> None:
         # Bombs
         bombs_placed = 0
         while bombs_placed < self.bombs:
