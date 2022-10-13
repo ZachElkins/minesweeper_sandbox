@@ -2,6 +2,7 @@ import pytest
 from minesweeper_sandbox.board import Board
 from minesweeper_sandbox.cell import Cell, CellValue, Position
 
+
 @pytest.fixture
 def board_2x1() -> Board:
     width, height, bombs = 2, 1, 1
@@ -9,6 +10,7 @@ def board_2x1() -> Board:
     move = Position(0, 0)
     board.populate_board(move=move)
     return board
+
 
 def test_board_init():
     width, height, bombs = 2, 2, 1
@@ -46,6 +48,7 @@ def test_board_reveal_empty(board_2x1: Board):
     reveal_pos = Position(0, 0)
     assert not board_2x1.reveal(pos=reveal_pos)
     assert board_2x1.revealed_cells == 1
+
 
 def test_board_reveal_bomb(board_2x1: Board):
     reveal_pos = Position(0, 1)
