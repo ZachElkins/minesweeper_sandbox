@@ -27,7 +27,7 @@ class Cell:
         self.value: CellValue = None
         self.revealed = False
         self.adjacent = []
-        self.pos: Position
+        self.pos: Position = None
 
     def set_position(self, pos: Position) -> None:
         self.pos = pos
