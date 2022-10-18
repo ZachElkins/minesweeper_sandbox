@@ -15,18 +15,17 @@ def test_position_init():
     [(cell_value.value) for cell_value in CellValue]
 )
 def test_cell_value_init(cell_value):
-    assert cell_value in ["B"] + list(range(9))
+    assert cell_value in [None, "B"] + list(range(9))
 
 
 def test_cell_init():
     cell = Cell()
     assert isinstance(cell, Cell)
-    assert cell.flagged == False
-    assert cell.value == None
-    assert cell.revealed == False
+    assert not cell.flagged
+    assert cell.value == CellValue.NONE
+    assert not cell.revealed
     assert cell.adjacent == []
-    print(cell.__dict__)
-    assert cell.pos == None
+    assert cell.pos is None
 
 
 def test_cell_set_position():
@@ -50,21 +49,21 @@ def test_cell_set_adjacent():
 
 def test_cell_reveal():
     cell = Cell()
-    assert cell.reveal() == False
-    assert cell.revealed == True
+    assert not cell.reveal()
+    assert cell.revealed
 
 
 def test_cell_reveal_bomb():
     cell = Cell()
     cell.value = CellValue.BOMB
-    assert cell.reveal() == True
+    assert cell.reveal()
 
 
 def test_cell_reveal_flagged():
     cell = Cell()
     cell.flag()
-    assert cell.reveal() == False
-    assert cell.revealed == False
+    assert not cell.reveal()
+    assert not cell.revealed
 
 
 def test_cell_flag_revealed():
@@ -76,14 +75,14 @@ def test_cell_flag_revealed():
 def test_cell_add_flag():
     cell = Cell()
     assert cell.flag() == 1
-    assert cell.flagged == True
+    assert cell.flagged
 
 
 def test_cell_remove_flag():
     cell = Cell()
     cell.flag()
     assert cell.flag() == -1
-    assert cell.flagged == False
+    assert not cell.flagged
 
 
 def test_cell_set_bomb():
@@ -94,9 +93,9 @@ def test_cell_set_bomb():
 
 def test_cell_is_bomb():
     cell = Cell()
-    assert cell.is_bomb() == False
+    assert not cell.is_bomb()
     cell.set_bomb()
-    assert cell.is_bomb() == True
+    assert cell.is_bomb()
 
 
 def test_cell_get_value_bomb():

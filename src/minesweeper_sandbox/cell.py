@@ -1,13 +1,16 @@
-from enum import Enum
 from dataclasses import dataclass
-from typing import Dict
+from enum import Enum
+from typing import Dict, List, Optional
+
 
 @dataclass
 class Position:
     x: int
     y: int
 
+
 class CellValue(Enum):
+    NONE = None
     BOMB = "B"
     ZERO = 0
     ONE = 1
@@ -19,20 +22,21 @@ class CellValue(Enum):
     SEVEN = 7
     EIGHT = 8
 
+
 class Cell:
-    state_by_num: Dict[CellValue, int] = {state.value: state for state in CellValue}
+    state_by_num: Dict[int, CellValue] = {state.value: state for state in CellValue}
 
     def __init__(self):
         self.flagged: bool = False
-        self.value: CellValue = None
+        self.value: CellValue = CellValue.NONE
         self.revealed = False
         self.adjacent = []
-        self.pos: Position = None
+        self.pos: Optional[Position] = None
 
     def set_position(self, pos: Position) -> None:
         self.pos = pos
 
-    def set_adjacent(self, adj: list) -> None:
+    def set_adjacent(self, adj: List['Cell']) -> None:
         self.adjacent = adj
         self.value = Cell.state_by_num[
             sum(adj_cell.value == CellValue.BOMB for adj_cell in self.adjacent)
@@ -59,5 +63,5 @@ class Cell:
     def get_value(self) -> CellValue:
         return self.value
 
-    def adj_cells(self) -> list:
+    def adj_cells(self) -> List['Cell']:
         return self.adjacent

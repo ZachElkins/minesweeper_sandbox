@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict
+from typing import Any, Dict
+
 from minesweeper_sandbox.board import Board
 from minesweeper_sandbox.cell import Position
+
 
 @dataclass
 class GameDifficultyPreset:
@@ -10,26 +12,30 @@ class GameDifficultyPreset:
     height: int
     bombs: int
 
+
 class GameDifficulty(Enum):
-    BEGINNER: GameDifficultyPreset = GameDifficultyPreset(width=9, height= 9, bombs=10)
+    BEGINNER: GameDifficultyPreset = GameDifficultyPreset(width=9, height=9, bombs=10)
     INTERMEDIATE: GameDifficultyPreset = GameDifficultyPreset(width=16, height=16, bombs=40)
     EXPERT: GameDifficultyPreset = GameDifficultyPreset(width=16, height=30, bombs=99)
+
 
 class GameAction(Enum):
     REVEAL = "reveal"
     FLAG = "flag"
+
 
 class GameState(Enum):
     PLAYING = "playing"
     WIN = "win"
     LOOSE = "loose"
 
+
 class Game:
     def __init__(self, difficulty: GameDifficulty):
         self.board: Board = Board(w=difficulty.value.width, h=difficulty.value.height, bombs=difficulty.value.bombs)
         self.first_move: bool = True
         self.state = GameState.PLAYING
-    
+
     def action(self, action: GameAction, x, y) -> GameState:
         if x > self.board.w or y > self.board.h:
             raise ValueError(f"({x}, {y}) is not a valid position.")
@@ -40,7 +46,7 @@ class Game:
             self.first_move = False
         elif action == GameAction.FLAG:
             self.flag(pos=pos)
-        
+
         return self.state
 
     def reveal(self, first_move: bool, pos: Position) -> None:
@@ -62,7 +68,7 @@ class Game:
         ]):
             self.state = GameState.WIN
 
-    def state_data(self) -> Dict:
+    def state_data(self) -> Dict[str, Any]:
         return {
             "state": self.state.value,
             "board": [
@@ -81,9 +87,10 @@ class Game:
         }
 
     @staticmethod
-    def display_state(game: Dict) -> None:
+    def display_state(game: Dict[str, Any]) -> None:
         print("  ", end="")
-        [print(x, end=" ") for x in range(len(game["board"]))]
+        for x in range(len(game["board"])):
+            print(x, end=" ")
         print("")
         for i, row in enumerate(game["board"]):
             print(i, end=" ")

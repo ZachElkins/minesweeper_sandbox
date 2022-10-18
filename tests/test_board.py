@@ -81,23 +81,20 @@ def test_board_flag(board_2x1: Board):
 
 def tests_board_get_adj_coords():
     adj_to_top_lft = [
-        pos for pos in
-            Board.get_adj_coords(3, 3, Position(0, 0))
+        pos for pos in Board.get_adj_coords(3, 3, Position(0, 0))
     ]
     adj_to_bot_rgt = [
-        pos for pos in
-            Board.get_adj_coords(3, 3, Position(2, 2))
+        pos for pos in Board.get_adj_coords(3, 3, Position(2, 2))
     ]
     adj_to_center = [
-        pos for pos in
-            Board.get_adj_coords(3, 3, Position(1, 1))
+        pos for pos in Board.get_adj_coords(3, 3, Position(1, 1))
     ]
     expected_adj_for_top_lft = [Position(0, 1), Position(1, 0), Position(1, 1)]
     expected_adj_for_bot_rgt = [Position(1, 1), Position(1, 2), Position(2, 1)]
     expected_adj_for_center = [
-        Position(0, 0), Position(0, 1), 
-        Position(0, 2), Position(1, 0), 
-        Position(1, 2), Position(2, 0), 
+        Position(0, 0), Position(0, 1),
+        Position(0, 2), Position(1, 0),
+        Position(1, 2), Position(2, 0),
         Position(2, 1), Position(2, 2)
     ]
     assert adj_to_top_lft == expected_adj_for_top_lft

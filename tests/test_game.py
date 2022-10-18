@@ -83,7 +83,6 @@ def test_game_game_action(action, value):
     assert action.value == value
 
 
-
 @pytest.mark.parametrize(
     "state, value",
     [
@@ -102,7 +101,7 @@ def test_game_init():
     game = Game(difficulty=diff)
     assert isinstance(game, Game)
     assert isinstance(game.board, Board)
-    assert game.first_move == True
+    assert game.first_move
     assert game.state == GameState.PLAYING
 
 
@@ -110,14 +109,14 @@ def test_game_action_reveal(simple_game: Game):
     action = GameAction.REVEAL
     res = simple_game.action(action=action, x=0, y=0)
     assert res == GameState.PLAYING
-    assert simple_game.first_move == False
+    assert not simple_game.first_move
 
 
 def test_game_action_flag(simple_game: Game):
     action = GameAction.FLAG
     res = simple_game.action(action=action, x=0, y=0)
     assert res == GameState.PLAYING
-    assert simple_game.first_move == True
+    assert simple_game.first_move
 
 
 def test_game_reveal_first_move(game_2x1: Game):
@@ -130,10 +129,10 @@ def test_game_reveal_first_move(game_2x1: Game):
     board_after = deepcopy(game_2x1.board.board)
     board_after_flat = sum(board_after, [])
     assert all(
-        [cell.value == None for cell in board_before_flat]
+        [cell.value == CellValue.NONE for cell in board_before_flat]
     )
     assert all(
-        [cell.value != None for cell in board_after_flat]
+        [cell.value != CellValue.NONE for cell in board_after_flat]
     )
 
 
@@ -158,9 +157,9 @@ def test_game_flag_first_move(game_2x1: Game):
     game_2x1.flag(pos=pos)
     board_flat = sum(game_2x1.board.board, [])
     assert all(
-        [cell.value == None for cell in board_flat]
+        [cell.value == CellValue.NONE for cell in board_flat]
     )
-    assert game_2x1.board.board[0][0].flagged == True
+    assert game_2x1.board.board[0][0].flagged
 
 
 def test_game_flag_win(game_2x1: Game):
@@ -168,8 +167,8 @@ def test_game_flag_win(game_2x1: Game):
     f_pos = Position(x=0, y=1)
     game_2x1.reveal(first_move=True, pos=r_pos)
     game_2x1.flag(pos=f_pos)
-    assert game_2x1.board.board[0][1].flagged == True
-    assert game_2x1.board.board[0][1].is_bomb() == True
+    assert game_2x1.board.board[0][1].flagged
+    assert game_2x1.board.board[0][1].is_bomb()
     assert game_2x1.state == GameState.WIN
 
 
@@ -188,7 +187,8 @@ def test_game_state_data(game_2x1, state_data_2x1: dict):
     assert game_2x1.state_data() == state_data_2x1
 
 
-def test_game_display_state(state_data_2x1:dict, capfd):
+def test_game_display_state(state_data_2x1: dict, capfd):
     Game.display_state(state_data_2x1)
     out, _ = capfd.readouterr()
-    assert out == "_ _ \n\nplaying | Bombs: 1 | Flags: 0 | Revealed: 0\n"
+    print(r'{}'.format(out))
+    assert out == "  0 \n0 _ _ \n\nplaying | Bombs: 1 | Flags: 0 | Revealed: 0\n"
